@@ -1,0 +1,32 @@
+services:
+  kafka:
+    image: wurstmeister/kafka
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+  zookeeper:
+    image: wurstmeister/zookeeper
+  mongo:
+    image: mongo
+  frontend:
+    build: frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - purchase-api
+  purchase-api:
+    build: purchase-api
+    volumes:
+      - ./purchase-api:/app
+    ports:
+      - 5000:5000
+    depends_on:
+      - mongo
+      - kafka
+  purchase-automation:
+    build: purchase-automation
+    volumes:
+      - ./purchase-automation:/app
+    depends_on:
+      - kafka
