@@ -1,5 +1,4 @@
 import {PurchaseConsumer} from "./PurchaseConsumer";
-import {PurchaseProducer} from "./PurchaseProducer";
 import {PurchaseRepo} from "./PurchaseRepo";
 
 export class PurchaseWorker {
@@ -7,11 +6,16 @@ export class PurchaseWorker {
 
     public async start(){
         await this.consumer.start(async ({ topic, partition, message }) => {
-            const purchaseName = message.value?.toString();
-
-            //await record = this.repo.findOne(id)
-            //record.complete = true;
-            //await this.repo.save(record);
+            const purchaseId = message.value?.toString();
+            if(!purchaseId){
+                return console.log("No purchase Id");
+            }
+            const record = await this.repo.findById(purchaseId);
+            if(!record){
+                return console.log("No record for", purchaseId);
+            }
+            record.complete = true;
+            await this.repo.save(record);
         });
     }
 }

@@ -7,9 +7,18 @@ export class PurchaseWorker {
     public async start(){
         await this.producer.start();
         await this.consumer.start(async ({ topic, partition, message }) => {
-            const purchaseName = message.value?.toString();
-            console.log("PurchaseConsumer", topic, partition, purchaseName);
-            return this.producer.send(`Purchase complete: ${purchaseName}`)
+            const purchaseId = message.value?.toString();
+            if(!purchaseId){
+                return console.log("No purchase Id");
+            }
+            console.log("PurchaseConsumer - processing purchase", topic, partition, purchaseId);
+            await sleep(5000);
+            console.log("PurchaseConsumer - purchase complete", topic, partition, purchaseId);
+            await this.producer.send(purchaseId)
         });
     }
+}
+
+function sleep(t = 1000){
+    return new Promise(resolve => setTimeout(resolve, t));
 }

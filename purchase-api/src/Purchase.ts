@@ -1,3 +1,4 @@
 export type Purchase = {
-    name: string
+    name: string,
+    complete: boolean,
 }

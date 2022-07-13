@@ -7,6 +7,8 @@ import { PurchaseApi } from "./PurchaseApi";
 import { Kafka } from "kafkajs";
 import {PurchaseService} from "./PurchaseService";
 import {PurchaseProducer} from "./PurchaseProducer";
+import {PurchaseWorker} from "./PurchaseWorker";
+import {PurchaseConsumer} from "./PurchaseConsumer";
 
 const KAFKA_HOST = process.env.KAFKA_HOST || "localhost";
 const MONGO_HOST = process.env.MONGO_HOST || "localhost";
@@ -25,8 +27,12 @@ async function main() {
     const purchaseRepo = new PurchaseRepo();
     const purchaseProducer = new PurchaseProducer(kafka);
     await purchaseProducer.start();
+    const purchaseConsumer = new PurchaseConsumer(kafka, "purchase-complete");
+
     const purchaseService = new PurchaseService(purchaseRepo, purchaseProducer)
     const purchaseApi = new PurchaseApi(app, purchaseService);
+    const purchaseWorker = new PurchaseWorker(purchaseConsumer, purchaseRepo);
+    await purchaseWorker.start();
 
     purchaseApi.start(PORT);
 }
