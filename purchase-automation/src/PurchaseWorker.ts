@@ -7,6 +7,7 @@ export class PurchaseWorker {
     public async start(){
         await this.producer.start();
         await this.consumer.start(async ({ topic, partition, message }) => {
+            console.log("Consumer message", message);
             const purchaseId = message.value?.toString();
             if(!purchaseId){
                 return console.log("No purchase Id");

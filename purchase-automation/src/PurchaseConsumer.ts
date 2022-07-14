@@ -13,7 +13,16 @@ export class PurchaseConsumer {
         await this.consumer.subscribe({ topic: this.topic, fromBeginning: true })
 
         await this.consumer.run({
-            eachMessage: func,
+            eachMessage: async (args: { topic: string, partition: number, message: KafkaMessage}) => {
+                if(args.message.key && args.message.value) {
+                    const decodedKey = await this.registry.decode(args.message.key)
+                    const decodedValue = await this.registry.decode(args.message.value)
+                    console.log({ decodedKey, decodedValue })
+                }else{
+                    console.log("Message has no key or value!");
+                }
+                return func(args)
+            },
         })
     }
 }
