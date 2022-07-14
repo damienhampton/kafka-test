@@ -7,12 +7,12 @@ import {PurchaseWorker} from "./PurchaseWorker";
 import {PurchaseProducer} from "./PurchaseProducer";
 import {SchemaRegistry} from "@kafkajs/confluent-schema-registry";
 
-const KAFKA_HOST = process.env.KAFKA_HOST || "localhost";
-const SCHEMA_REGISTRY_HOST = process.env.SCHEMA_REGISTRY_HOST || "localhost";
+const KAFKA_HOST = process.env.KAFKA_HOST || "localhost:9092";
+const SCHEMA_REGISTRY_HOST = process.env.SCHEMA_REGISTRY_HOST || "localhost:8081";
 
 async function main() {
-    const kafkaBrokers = [`${KAFKA_HOST}:9092`];
-    const schemaRegistryHost = `http://${SCHEMA_REGISTRY_HOST}:8081`;
+    const kafkaBrokers = [KAFKA_HOST];
+    const schemaRegistryHost = `http://${SCHEMA_REGISTRY_HOST}`;
     console.log("Automation", kafkaBrokers);
 
     const registry = new SchemaRegistry({ host: schemaRegistryHost });

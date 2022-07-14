@@ -15,7 +15,7 @@ Observe the docker compose logs to see how the message move around the system.
 
 Run kafka, zookeeper and mongo in docker and then just run the individual apps.
 
-`docker compose -f docker-compose-dev/yaml up`
+`docker compose -f docker-compose-dev.yaml up`
 
 ```
 cd puchase-api
