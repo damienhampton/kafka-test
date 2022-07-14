@@ -1,3 +1,5 @@
+import dotenv from 'dotenv';
+dotenv.config();
 import express from 'express';
 
 import mongoose from 'mongoose';
@@ -15,19 +17,23 @@ const MONGO_HOST = process.env.MONGO_HOST || "localhost";
 const PORT = (process.env.PORT || 5000) as number;
 
 async function main() {
+    const kafkaBrokers = [`${KAFKA_HOST}:9092`];
+    const mongoUri = `mongodb://${MONGO_HOST}:27017/purchases`;
+    console.log("API", kafkaBrokers, mongoUri);
+
     const kafka = new Kafka({
         clientId: 'purchase-api',
-        brokers: [`${KAFKA_HOST}:9092`],
+        brokers: kafkaBrokers,
     })
 
-    await mongoose.connect(`mongodb://${MONGO_HOST}:27017/purchases`);
+    await mongoose.connect(mongoUri);
 
     const app = express();
 
     const purchaseRepo = new PurchaseRepo();
-    const purchaseProducer = new PurchaseProducer(kafka);
+    const purchaseProducer = new PurchaseProducer(kafka, "purchase-created");
     await purchaseProducer.start();
-    const purchaseConsumer = new PurchaseConsumer(kafka, "purchase-complete");
+    const purchaseConsumer = new PurchaseConsumer(kafka, "purchase-complete", "api-group");
 
     const purchaseService = new PurchaseService(purchaseRepo, purchaseProducer)
     const purchaseApi = new PurchaseApi(app, purchaseService);

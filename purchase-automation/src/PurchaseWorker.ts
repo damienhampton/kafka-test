@@ -11,10 +11,11 @@ export class PurchaseWorker {
             if(!purchaseId){
                 return console.log("No purchase Id");
             }
-            console.log("PurchaseConsumer - processing purchase", topic, partition, purchaseId);
+            console.log("Automation PurchaseConsumer - processing purchase", topic, partition, purchaseId);
             await sleep(5000);
-            console.log("PurchaseConsumer - purchase complete", topic, partition, purchaseId);
+            console.log("Automation PurchaseConsumer - purchase complete", topic, partition, purchaseId);
             await this.producer.send(purchaseId)
+            console.log("Automation PurchaseProducer - puchase-complete purchase id", topic, partition, purchaseId);
         });
     }
 }

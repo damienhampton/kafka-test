@@ -8,6 +8,7 @@ export class PurchaseService{
     public async save(purchase: Purchase){
         const record = await this.repo.save(purchase);
         await this.producer.send(record.id);
+        console.log("API PurchaseProducer - purchase-created purchase id", record.id);
         return record;
     }
 

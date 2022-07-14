@@ -10,12 +10,18 @@ export class PurchaseWorker {
             if(!purchaseId){
                 return console.log("No purchase Id");
             }
-            const record = await this.repo.findById(purchaseId);
-            if(!record){
-                return console.log("No record for", purchaseId);
+            try {
+                const record = await this.repo.findById(purchaseId);
+                if (!record) {
+                    return console.log("No record for", purchaseId);
+                }
+                record.complete = true;
+                await this.repo.save(record);
+                console.log("API DB - updating purchase", topic, partition, purchaseId);
+            }catch(_e){
+                const e = _e as Error;
+                console.log(e.message);
             }
-            record.complete = true;
-            await this.repo.save(record);
         });
     }
 }

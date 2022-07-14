@@ -3,8 +3,8 @@ import {Kafka, KafkaMessage} from "kafkajs";
 export class PurchaseConsumer {
     private consumer;
 
-    constructor(kafka: Kafka, private topic: string) {
-        this.consumer = kafka.consumer({ groupId: 'test-group' })
+    constructor(kafka: Kafka, private topic: string, groupId: string) {
+        this.consumer = kafka.consumer({ groupId })
     }
 
     public async start(func: (args: { topic: string, partition: number, message: KafkaMessage }) => Promise<void>){

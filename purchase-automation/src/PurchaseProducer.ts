@@ -1,10 +1,10 @@
-import {Kafka} from "kafkajs";
+import {Kafka, Partitioners} from "kafkajs";
 
 export class PurchaseProducer {
     private producer;
 
     constructor(kafka: Kafka, private topic: string) {
-        this.producer = kafka.producer();
+        this.producer = kafka.producer({ createPartitioner: Partitioners.LegacyPartitioner });
     }
     public async start(){
         return this.producer.connect();
