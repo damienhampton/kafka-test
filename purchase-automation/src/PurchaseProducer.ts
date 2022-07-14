@@ -3,7 +3,8 @@ import {SchemaRegistry} from "@kafkajs/confluent-schema-registry";
 
 export class PurchaseProducer {
     private producer;
-    private schemaSubject = "json.Purchase";
+    // private schemaSubject = "json.Purchase";
+    private schemaSubject = "proto.Purchase";
 
     constructor(kafka: Kafka, private registry: SchemaRegistry, private topic: string) {
         this.producer = kafka.producer({ createPartitioner: Partitioners.LegacyPartitioner });

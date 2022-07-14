@@ -6,14 +6,16 @@ Uses docker compose to spin up kafka, zookeeper, mongo, an API server (nodejs), 
 Run all the apps:
 `docker compose up`
 
-Register the purchase schema:
+Register the purchase schemas (JSON + protobuf):
 `yarn schema:register`
 
-Then open: `http://localhost:3000`
+Then open: `http://localhost:3000` and click create purchase.
 
 After creating a purchase, it should take ~5 seconds for the completion state of the purchase to be true.
 
 Observe the docker compose logs to see how the message move around the system.
+
+You can change the schema in use in the producer code.
 
 # Develop
 

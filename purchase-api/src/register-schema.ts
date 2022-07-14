@@ -10,10 +10,17 @@ async function main() {
 
     const registry = new SchemaRegistry({host: schemaRegistryHost});
 
-    const schema = fs.readFileSync("./schemas/purchase.json", { encoding: "utf8" });
+    async function registerSchema(path: string, type: SchemaType.JSON | SchemaType.PROTOBUF, subject: string){
+        const schema = fs.readFileSync(path, { encoding: "utf8" });
 
-    const {id} = await registry.register({type: SchemaType.JSON, schema}, { subject: 'json.Purchase'})
-    console.log("Success", id);
+        const {id} = await registry.register({type, schema}, { subject })
+        console.log("Success", id);
+    }
+
+    await registerSchema("./schemas/purchase.json", SchemaType.JSON, "json.Purchase");
+    await registerSchema("./schemas/purchase.proto", SchemaType.PROTOBUF, "proto.Purchase");
 }
+
+
 
 main();
