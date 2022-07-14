@@ -17,6 +17,7 @@ async function main() {
 
     const registry = new SchemaRegistry({ host: schemaRegistryHost });
 
+
     const kafka = new Kafka({
         clientId: 'purchase-worker',
         brokers: kafkaBrokers,

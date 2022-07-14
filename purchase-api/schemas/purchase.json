@@ -1,0 +1,25 @@
+{
+  "definitions": {
+    "record:json.Purchase": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "complete"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "complete": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "$ref": "#/definitions/record:json.Purchase"
+}

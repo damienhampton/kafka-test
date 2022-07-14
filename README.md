@@ -3,9 +3,13 @@
 Uses docker compose to spin up kafka, zookeeper, mongo, an API server (nodejs), an backoffice server (nodejs) and a frontend (react).
 
 # Run
+Run all the apps:
 `docker compose up`
 
-Open: `http://localhost:3000`
+Register the purchase schema:
+`yarn schema:register`
+
+Then open: `http://localhost:3000`
 
 After creating a purchase, it should take ~5 seconds for the completion state of the purchase to be true.
 
