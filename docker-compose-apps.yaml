@@ -71,20 +71,35 @@ services:
       CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
       CONFLUENT_METRICS_TOPIC_REPLICATION: 1
       PORT: 9021
-#  kafka:
-#    image: wurstmeister/kafka
-#    ports:
-#      - 9092:9092
-#    environment:
-#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-#      KAFKA_ADVERTISED_HOST_NAME: localhost
-#      KAFKA_BROKER_ID: 0
-#      KAFKA_CREATE_TOPICS: "purchase-created:1:1,purchase-complete:1:1"
-#  zookeeper:
-#    image: wurstmeister/zookeeper
-#    ports:
-#      - 2181:2181
   mongo:
     image: mongo
     ports:
       - 27017:27017
+  frontend:
+    build: frontend
+    ports:
+      - 3000:3000
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - purchase-api
+  purchase-api:
+    build: purchase-api
+    environment:
+      KAFKA_HOST: kafka
+      MONGO_HOST: mongo
+    volumes:
+      - ./purchase-api:/app
+    ports:
+      - 5000:5000
+    depends_on:
+      - mongo
+      - kafka
+  purchase-automation:
+    build: purchase-automation
+    environment:
+      KAFKA_HOST: kafka
+    volumes:
+      - ./purchase-automation:/app
+    depends_on:
+      - kafka

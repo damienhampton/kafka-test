@@ -7,6 +7,7 @@
     "start": "nodemon --exec ts-node src/start.ts"
   },
   "dependencies": {
+    "@kafkajs/confluent-schema-registry": "^3.2.1",
     "@types/node": "^18.0.3",
     "dotenv": "^16.0.1",
     "kafkajs": "^2.1.0",

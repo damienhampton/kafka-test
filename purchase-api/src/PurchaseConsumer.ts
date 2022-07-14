@@ -1,9 +1,10 @@
 import {Kafka, KafkaMessage} from "kafkajs";
+import {SchemaRegistry} from "@kafkajs/confluent-schema-registry";
 
 export class PurchaseConsumer {
     private consumer;
 
-    constructor(kafka: Kafka, private topic: string, groupId: string) {
+    constructor(kafka: Kafka, private registry: SchemaRegistry, private topic: string, groupId: string) {
         this.consumer = kafka.consumer({ groupId })
     }
 
