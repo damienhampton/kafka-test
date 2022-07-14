@@ -1,11 +1,13 @@
 import express from "express";
 import bodyParser from "body-parser";
+import cors from "cors";
 import {Purchase} from "./Purchase";
 import {PurchaseService} from "./PurchaseService";
 
 export class PurchaseApi{
     constructor(private app: express.Application, private service: PurchaseService) {
         app.use(bodyParser.json());
+        app.use(cors())
     }
 
     public start(port = 5000){
