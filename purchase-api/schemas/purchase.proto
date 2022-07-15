@@ -5,3 +5,5 @@ message PurchaseMessage {
   string name = 2;
   bool complete = 3;
 }
+
+option go_package = "damien.com/risk-assessment/protos/purchase";
